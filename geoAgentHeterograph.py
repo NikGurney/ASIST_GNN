@@ -59,6 +59,7 @@ agent_room_edges = []
 room_agent_edges = []
 agent_portal_edges = []
 portal_agent_edges = []
+agent_agent_edges = list(its.permutations(range(agents), 2))
 for i in range(agents):
     for j in enumerate(room_node_names):
         agent_room_edges.append((i, j[0]))
@@ -75,6 +76,7 @@ g = dgl.heterograph({
         ('agent', 'relates', 'room'): agent_room_edges,
         ('room', 'relates', 'agent'): room_agent_edges,
         ('agent', 'relates', 'portal'): agent_portal_edges,
-        ('portal', 'relates', 'agent'): portal_agent_edges        
+        ('portal', 'relates', 'agent'): portal_agent_edges,
+        ('agent', 'relates', 'agent'): agent_agent_edges
     })
 
