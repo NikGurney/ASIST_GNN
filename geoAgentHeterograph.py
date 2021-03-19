@@ -53,7 +53,9 @@ for i in orig_map['connections']:
         room_portal_edges.extend(its.product(room_indices, [portal_index]))
         del room_indices
         del portal_index
-        
+
+#At some point these will come in as alpha, bravo, gamma or something
+#might be worthwhile connecting their names and number IDs?        
 agents = 3
 agent_room_edges = []
 room_agent_edges = []
