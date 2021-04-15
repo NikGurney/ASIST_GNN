@@ -9,6 +9,7 @@ import os
 import json
 import itertools as its
 import dgl
+import torch as th
 
 
 os.chdir('c:/Users/gurney/Documents/ASIST/teamGNN')
@@ -82,3 +83,27 @@ g = dgl.heterograph({
         ('agent', 'relates', 'agent'): agent_agent_edges
     })
 
+#creating spaces to hold feature data
+#10 is an arbitrary n of victims
+#idx0 = triaged, float 0 to 1 as % triaged
+#idx1 = critical, 1 if true
+g.nodes['room'].data['victims'] = th.zeros(243, 10, 2) 
+g.nodes['portal'].data['victims'] = th.zeros(93, 5, 2) 
+
+#need to automate the n of rubble can likely get this from the csv that has locals
+#float to 1 to 0 as % uncleared
+g.nodes['room'].data['rubble'] = th.zeros(243, 10, 1)
+g.nodes['portal'].data['rubble'] = th.zeros(243, 10, 1)
+
+#one hot for tool 0 - med, 1 - rubble, 2 - transport
+g.nodes['agent'].data['tool'] = th.zeros(3, 3, 1)
+#probs of having each map
+g.nodes['agent'].data['map'] = th.full((3, 3), 1/3)
+#dist from center of room 1 = furthest possible
+g.nodes['agent'].data['dist'] = th.zeros(3, 1)
+#direction face is pointing
+g.nodes['agent'].data['yaw'] = th.zeros(3, 1)
+#converted from durability range 1 being max
+g.nodes['agent'].data['toolLife'] = th.ones(3, 1)
+#boolean for if player is swinging
+g.nodes['agent'].data['swinging'] = th.zeros(3, 1)
